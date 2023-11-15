@@ -1,7 +1,7 @@
 const arrSize = 20000000;
 const pointLoc = arrSize - 16000000;
 
-arr = [];
+let arr = [];
 for (n = 0; n < arrSize; n++) {
 	arr.push({
 		testingstring: 'stringtest',
@@ -66,7 +66,7 @@ function runtests() {
 		}, 3000);
 	}
 
-	function test3(next) {
+	function test3() {
 		const filterStartTime = performance.now();
 		const filterArr = (ar) =>
 			ar.filter(function (item) {
