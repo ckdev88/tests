@@ -1,5 +1,5 @@
-const arrSize = 30000000;
-const pointLoc = arrSize - 26000000;
+const arrSize = 20000000;
+const pointLoc = arrSize - 16000000;
 
 arr = [];
 for (n = 0; n < arrSize; n++) {
@@ -20,48 +20,91 @@ for (n = 0; n < arrSize; n++) {
 
 console.log('Arr size:', arrSize, 'Point to % of arr:', ((pointLoc / arrSize) * 100).toFixed(2));
 
-const forStartTime = performance.now();
-const forArr = (ar) => {
-	for (i = 0; i < ar.length; i++) {
-		if (ar[i].indextest === pointLoc) {
-			return ar[i];
-		}
+function runtests() {
+	function test1() {
+		const forStartTime = performance.now();
+		const forArr = (ar) => {
+			for (i = 0; i < ar.length; i++) {
+				if (ar[i].indextest === pointLoc) {
+					return ar[i];
+				}
+			}
+		};
+		console.log('Found index:', forArr(arr).indextest);
+		const forEndTime = performance.now();
+		console.log(
+			'running time using const, arrow function, for-loop:',
+			(forEndTime - forStartTime).toFixed(2),
+			'ms'
+		);
+
+		setTimeout(() => {
+			console.log('\nstart test 2...');
+			test2();
+		}, 3000);
 	}
-};
-console.log('\nFound index:', forArr(arr).indextest);
-const forEndTime = performance.now();
-console.log('running time using const, arrow function, for-loop:', forEndTime - forStartTime, 'ms');
 
-const for2StartTime = performance.now().toFixed(2);
-function forArr2(ar) {
-	for (i = 0; i < ar.length; i++) {
-		if (ar[i].indextest === pointLoc) {
-			return ar[i];
+	function test2() {
+		const filter2StartTime = performance.now();
+		function filterArr2(ar) {
+			return ar.filter(function (item) {
+				return item.indextest === pointLoc;
+			});
 		}
+		const tmparr2 = filterArr2(arr);
+		console.log('Found index:', tmparr2[0].indextest);
+		const filter2EndTime = performance.now();
+		console.log(
+			'running time using function (classic), arrow function, filter:',
+			(filter2EndTime - filter2StartTime).toFixed(2),
+			'ms'
+		);
+
+		setTimeout(() => {
+			console.log('\nstart test 3...');
+			test3();
+		}, 3000);
 	}
+
+	function test3(next) {
+		const filterStartTime = performance.now();
+		const filterArr = (ar) =>
+			ar.filter(function (item) {
+				return item.indextest === pointLoc;
+			});
+		const tmparr = filterArr(arr);
+
+		console.log('Found index:', tmparr[0].indextest);
+		const filterEndTime = performance.now();
+		console.log(
+			'running time using const, arrow function, filter:',
+			(filterEndTime - filterStartTime).toFixed(2),
+			'ms'
+		);
+
+		setTimeout(() => {
+			console.log('\nstart test 4...');
+			test4();
+		}, 3000);
+	}
+
+	function test4() {
+		const for2StartTime = performance.now();
+		function forArr2(ar) {
+			for (i = 0; i < ar.length; i++) {
+				if (ar[i].indextest === pointLoc) {
+					return ar[i];
+				}
+			}
+		}
+		console.log('Found index:', forArr2(arr).indextest);
+		const for2EndTime = performance.now();
+		console.log('running time using function (classic), for-loop:', (for2EndTime - for2StartTime).toFixed(2), 'ms');
+		setTimeout(() => {
+			console.log('waiting for 4 to finish');
+		}, 1000);
+	}
+	console.log('\nstart test 1...');
+	test1();
 }
-console.log('\nFound index:', forArr2(arr).indextest);
-const for2EndTime = performance.now();
-console.log('running time using function (classic), for-loop:', for2EndTime - for2StartTime, 'ms');
-
-const filterStartTime = performance.now().toFixed(2);
-const filterArr = (ar) =>
-	ar.filter(function (item) {
-		return item.indextest === pointLoc;
-	});
-const tmparr = filterArr(arr);
-
-console.log('\nFound index:', tmparr[0].indextest);
-const filterEndTime = performance.now();
-console.log('running time using const, arrow function, filter:', filterEndTime - filterStartTime, 'ms');
-
-const filter2StartTime = performance.now().toFixed(2);
-function filterArr2(ar) {
-	return ar.filter(function (item) {
-		return item.indextest === pointLoc;
-	});
-}
-const tmparr2 = filterArr2(arr);
-console.log('\nFound index:', tmparr2[0].indextest);
-const filter2EndTime = performance.now().toFixed(2);
-console.log('running time using function (classic), arrow function, filter:', filter2EndTime - filter2StartTime, 'ms');
+runtests();
