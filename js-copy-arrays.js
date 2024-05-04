@@ -1,3 +1,17 @@
+/**
+Result is basically always as follows:
+[
+  { title: 'spread       ', time: 0.0009019999999999584 },
+  { title: 'slice        ', time: 0.0009120000000031325 },
+  { title: 'concat       ', time: 0.001152000000001152 },
+  { title: 'object values', time: 0.0031460000000009813 },
+  { title: 'for--        ', time: 0.0072729999999978645 },
+  { title: 'for++        ', time: 0.018194000000001154 },
+  { title: 'arr map      ', time: 0.022493000000000762 },
+  { title: 'for of push  ', time: 0.1060389999999991 },
+  { title: 'JSON parse   ', time: 5.753011000000001 }
+]
+ */
 // --- random array generation
 function createArr() {
 	function createRandomObj(fieldCount, allowNested) {
@@ -128,6 +142,15 @@ start = performance.now()
 title = 'for++        '
 a = []
 for (var z = 0; z < arr.length; z++) {
+	a[z] = arr[z]
+}
+
+perf = performance.now() - start
+results.push({ title: title, time: perf })
+start = performance.now()
+title = 'for--        '
+a = []
+for (var z = arr.length; z > -1; z--) {
 	a[z] = arr[z]
 }
 perf = performance.now() - start
