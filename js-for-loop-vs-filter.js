@@ -1,7 +1,8 @@
-const arrSize = 20000000;
-const pointLoc = arrSize - (arrSize - 1600);
+const arrSize = 20000000
+const pointLoc = arrSize - 1600
+const pointLocReversed = arrSize - pointLoc
 
-let arr = [];
+let arr = []
 for (n = 0; n < arrSize; n++) {
 	arr.push({
 		testingstring: 'stringtest',
@@ -12,116 +13,107 @@ for (n = 0; n < arrSize; n++) {
 			'Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.',
 		longtekst3:
 			'Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.',
-		sentence: 'Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.',
+		sentence:
+			'Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.',
 		indextest: n,
-	});
+	})
 }
 
-console.log('Arr size:', arrSize, 'Point to % of arr:', ((pointLoc / arrSize) * 100).toFixed(2));
+let results = []
+let perf = 0
+let title = ''
+let a
+let starttime
+let newArr
 
-function runtests(arr) {
-	function test1(arr) {
-		const starttime = performance.now();
-		const newArr = (ar) => {
-			for (i = 0; i < ar.length; i++) {
-				if (ar[i].indextest === pointLoc) {
-					return ar[i];
-				}
-			}
-		};
+function runtests() {
+	results = []
+	console.log('startings tests...')
 
-		console.log('Found index:', newArr(arr).indextest);
-		console.log(
-			'running time using const, arrow function, for-loop:',
-			(performance.now() - starttime).toFixed(2),
-			'ms'
-		);
-
-		setTimeout(() => {
-			console.log('\nstart test 2...');
-			test2();
-		}, 1000);
+	function test1() {
+		starttime = performance.now()
+		const getNewArr = () => {
+			for (i = 0; i < arr.length; i++)
+				if (arr[i].indextest === pointLoc) return arr[i].indextest
+		}
+		const proof = getNewArr()
+		results.push({
+			title: 'const arrow func, for-loop',
+			perf: Math.floor(performance.now() - starttime),
+			proof: proof,
+		})
+		setTimeout(() => test2(), 500)
 	}
 
 	function test2() {
-		const starttime = performance.now();
-		function getNewArr(ar) {
-			return ar.filter(function (item) {
-				return item.indextest === pointLoc;
-			});
+		starttime = performance.now()
+		function getNewArr() {
+			return arr.filter(function (item) {
+				return item.indextest === pointLoc
+			})
 		}
-		const newArr = getNewArr(arr);
+		const proof = getNewArr()[0].indextest
 
-		console.log('Found index:', newArr[0].indextest);
-		console.log(
-			'running time using function (classic), arrow function, filter:',
-			(performance.now() - starttime).toFixed(2),
-			'ms'
-		);
+		results.push({
+			title: 'classic function, filter',
+			perf: Math.floor(performance.now() - starttime),
+			proof: proof,
+		})
 
-		setTimeout(() => {
-			console.log('\nstart test 3...');
-			test3();
-		}, 1000);
+		setTimeout(() => test3(), 500)
 	}
 
 	function test3() {
-		const starttime = performance.now();
-		const getNewArr = (ar) =>
-			ar.filter(function (item) {
-				return item.indextest === pointLoc;
-			});
-		const newArr = getNewArr(arr);
+		starttime = performance.now()
+		const getNewArr = () =>
+			arr.filter(function (item) {
+				return item.indextest === pointLoc
+			})
+		const proof = getNewArr()[0].indextest
 
-		console.log('Found index:', newArr[0].indextest);
-		console.log('running time using const, arrow function, filter:', (performance.now() - starttime).toFixed(2), 'ms');
+		results.push({
+			title: 'const arrow funct, filter',
+			perf: Math.floor(performance.now() - starttime),
+			proof: proof,
+		})
 
-		setTimeout(() => {
-			console.log('\nstart test 4...');
-			test4();
-		}, 1000);
+		setTimeout(() => test4(), 500)
 	}
 
 	function test4() {
-		const starttime = performance.now();
-		function newArr(ar) {
-			for (i = 0; i < ar.length; i++) {
-				if (ar[i].indextest === pointLoc) {
-					return ar[i];
-				}
+		starttime = performance.now()
+		const max = arr.length
+		for (i = 0; i < max; i++) {
+			if (arr[i].indextest === pointLoc) {
+				proof = arr[i].indextest
+				break
 			}
 		}
-
-		console.log('Found index:', newArr(arr).indextest);
-		console.log('running time using function (classic), for-loop:', (performance.now() - starttime).toFixed(2), 'ms');
-		setTimeout(() => {
-			console.log('\nstart test 5...');
-			test5(arr);
-		}, 1000);
+		results.push({
+			title: 'for++',
+			perf: Math.floor(performance.now() - starttime),
+			proof: proof,
+		})
+		setTimeout(() => test5(), 1500)
 	}
+
 	function test5() {
-		const starttime = performance.now();
-		const newArr = [];
-		function getNewArr(ar) {
-			for (i = 0; i < ar.length; i++) {
-				if (ar[i].indextest === pointLoc) {
-					newArr.push(ar[i]);
-				}
+		starttime = performance.now()
+		for (let i = arr.length - 1; i > -1; i--) {
+			if (arr[i].indextest === pointLocReversed) {
+				proof = arr[i].indextest
+				break
 			}
 		}
-		getNewArr(arr);
+		results.push({
+			title: 'for--',
+			perf: Math.floor(performance.now() - starttime),
+			proof: proof,
+		})
 
-		console.log('Found index:', newArr[0].indextest);
-		console.log(
-			'running time using function (classic), for-loop, begin to end:',
-			(performance.now() - starttime).toFixed(2),
-			'ms'
-		);
-		setTimeout(() => {
-			console.log('\ntest 5 ended');
-		}, 1000);
+		setTimeout(() => console.log(results.sort((a, b) => a.perf - b.perf)), 500)
 	}
-	console.log('\nstart test 1...');
-	test1(arr);
+
+	test1()
 }
-runtests(arr);
+runtests()
