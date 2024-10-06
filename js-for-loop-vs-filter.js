@@ -3,7 +3,7 @@ const pointLoc = arrSize - 1600
 const pointLocReversed = arrSize - pointLoc
 
 let arr = []
-for (n = 0; n < arrSize; n++) {
+for (let n = 0; n < arrSize; n++) {
 	arr.push({
 		testingstring: 'stringtest',
 		testingnum: 1231,
@@ -20,11 +20,8 @@ for (n = 0; n < arrSize; n++) {
 }
 
 let results = []
-let perf = 0
-let title = ''
-let a
+let steps=0
 let starttime
-let newArr
 
 function runtests() {
 	results = []
@@ -33,14 +30,14 @@ function runtests() {
 	function test1() {
 		starttime = performance.now()
 		const getNewArr = () => {
-			for (i = 0; i < arr.length; i++)
+			for (let i = 0; i < arr.length; i++)
 				if (arr[i].indextest === pointLoc) return arr[i].indextest
 		}
-		const proof = getNewArr()
+		const steps = getNewArr()
 		results.push({
 			title: 'const arrow func, for-loop',
-			perf: Math.floor(performance.now() - starttime),
-			proof: proof,
+			timer: Math.floor(performance.now() - starttime),
+			steps: steps,
 		})
 		setTimeout(() => test2(), 500)
 	}
@@ -52,12 +49,12 @@ function runtests() {
 				return item.indextest === pointLoc
 			})
 		}
-		const proof = getNewArr()[0].indextest
+		const steps = getNewArr()[0].indextest
 
 		results.push({
 			title: 'classic function, filter',
-			perf: Math.floor(performance.now() - starttime),
-			proof: proof,
+			timer: Math.floor(performance.now() - starttime),
+			steps: steps,
 		})
 
 		setTimeout(() => test3(), 500)
@@ -69,12 +66,12 @@ function runtests() {
 			arr.filter(function (item) {
 				return item.indextest === pointLoc
 			})
-		const proof = getNewArr()[0].indextest
+		const steps = getNewArr()[0].indextest
 
 		results.push({
 			title: 'const arrow funct, filter',
-			perf: Math.floor(performance.now() - starttime),
-			proof: proof,
+			timer: Math.floor(performance.now() - starttime),
+			steps: steps,
 		})
 
 		setTimeout(() => test4(), 500)
@@ -83,16 +80,16 @@ function runtests() {
 	function test4() {
 		starttime = performance.now()
 		const max = arr.length
-		for (i = 0; i < max; i++) {
+		for(let i = 0; i < max; i++) {
 			if (arr[i].indextest === pointLoc) {
-				proof = arr[i].indextest
+				steps = arr[i].indextest
 				break
 			}
 		}
 		results.push({
 			title: 'for++',
-			perf: Math.floor(performance.now() - starttime),
-			proof: proof,
+			timer: Math.floor(performance.now() - starttime),
+			steps: steps,
 		})
 		setTimeout(() => test5(), 1500)
 	}
@@ -101,17 +98,17 @@ function runtests() {
 		starttime = performance.now()
 		for (let i = arr.length - 1; i > -1; i--) {
 			if (arr[i].indextest === pointLocReversed) {
-				proof = arr[i].indextest
+				steps = arr[i].indextest
 				break
 			}
 		}
 		results.push({
 			title: 'for--',
-			perf: Math.floor(performance.now() - starttime),
-			proof: proof,
+			timer: Math.floor(performance.now() - starttime),
+			steps: steps,
 		})
 
-		setTimeout(() => console.log(results.sort((a, b) => a.perf - b.perf)), 500)
+		setTimeout(() => console.log(results.sort((a, b) => a.timer - b.timer)), 500)
 	}
 
 	test1()
